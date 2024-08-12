@@ -13,7 +13,7 @@ class createUserCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'app:create-user-command {name} {email} {password}';
+    protected $signature = 'app:create_user {name} {email} {password}';
 
     /**
      * The console command description.
