@@ -4,6 +4,9 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Http\Controllers\AuthController;
+use App\Models\User;
+use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class createUserCommand extends Command
@@ -53,12 +56,22 @@ class createUserCommand extends Command
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:5'
         ], $messages, $attributes);
-
         
         if ($validator->fails()) {
             dd($validator->errors());
         };
 
-        
+        DB::beginTransaction();
+        try {
+            User::create($data);
+
+            DB::commit();
+        } 
+        catch (Exception $e) {
+            dd($e->getMessage());
+        }
+
+        echo 'Usuário ' .  $data['name'] . ' criado com sucesso';
+        return ;
     }
 }
